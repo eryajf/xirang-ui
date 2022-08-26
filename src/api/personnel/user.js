@@ -51,3 +51,12 @@ export function batchDeleteUserByIds(data) {
     data
   })
 }
+
+// 更改用户状态（已完成）
+export function changeUserStatus(data) {
+  return request({
+    url: '/api/user/changeUserStatus',
+    method: 'post',
+    data
+  })
+}

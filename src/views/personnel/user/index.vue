@@ -33,9 +33,10 @@
         <el-table-column show-overflow-tooltip sortable prop="username" label="用户名" />
         <el-table-column show-overflow-tooltip sortable prop="nickname" label="中文名" />
         <el-table-column show-overflow-tooltip sortable prop="givenName" label="花名" />
-        <el-table-column show-overflow-tooltip sortable prop="status" label="状态" align="center">
+        <!-- 使用按钮方式展示，以后改成布尔参数比较合适 -->
+        <el-table-column label="状态" align="center">
           <template slot-scope="scope">
-            <el-tag size="small" :type="scope.row.status === 1 ? 'success':'danger'" disable-transitions>{{ scope.row.status === 1 ? '正常':'禁用' }}</el-tag>
+            <el-switch v-model="scope.row.status" :active-value='1' :inactive-value='2' @change="userStateChanged(scope.row)"></el-switch>
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip sortable prop="mail" label="邮箱" />
@@ -181,7 +182,7 @@
 import JSEncrypt from 'jsencrypt'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { getUsers, createUser, updateUserById, batchDeleteUserByIds } from '@/api/personnel/user'
+import { getUsers, createUser, updateUserById, batchDeleteUserByIds, changeUserStatus } from '@/api/personnel/user'
 import { getRoles } from '@/api/system/role'
 import { getGroupTree } from '@/api/personnel/group'
 
@@ -309,7 +310,11 @@ wLXapv+ZfsjG7NgdawIDAQAB
       // 删除按钮弹出框
       popoverVisible: false,
       // 表格多选
-      multipleSelection: []
+      multipleSelection: [],
+      changeUserStatusFormData: {
+        id: '',
+        status: '',
+      },
     }
   },
   created() {
@@ -351,7 +356,7 @@ wLXapv+ZfsjG7NgdawIDAQAB
           pageSize: 1000 // 平常百姓人家应该不会有这么多数据吧
         }
         const { data } = await getGroupTree(checkParams)
-        this.departmentsOptions = [{ ID: 0, groupName: '请选择部门信息', groupType: 'T', children: data }]
+        this.departmentsOptions = [{ ID: 0, remark: '请选择部门信息', groupName: 'C', children: data }]
       } finally {
         this.loading = false
       }
@@ -586,6 +591,20 @@ wLXapv+ZfsjG7NgdawIDAQAB
       })
     },
 
+    // 监听 switch 开关 状态改变
+   async userStateChanged(userInfo) {
+      this.changeUserStatusFormData.id = userInfo.ID
+      this.changeUserStatusFormData.status = userInfo.status
+
+      const { code } = await changeUserStatus(this.changeUserStatusFormData)
+
+      if (code !== 0) {
+        userInfo.status = !userInfo.status
+        return this.$message.error('更新用户状态失败')
+      }
+      this.$message.success('更新用户状态成功')
+    },
+
     // 表格多选
     handleSelectionChange(val) {
       this.multipleSelection = val
@@ -631,8 +650,8 @@ wLXapv+ZfsjG7NgdawIDAQAB
     normalizer(node) {
       return {
         id: node.ID,
-        label: node.groupType + '=' + node.groupName,
-        isDisabled: node.groupType === 'ou',
+        label: node.groupName + '=' + node.remark,
+        isDisabled: node.ID === 0,
         children: node.children
       }
     },

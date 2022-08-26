@@ -33,7 +33,7 @@ export function emailPass(data) {
     data
   })
 }
-// 创建用户（已完成） 
+// 创建用户（已完成）
 export function createUser(data) {
   return request({
     url: '/api/user/add',
@@ -44,7 +44,6 @@ export function createUser(data) {
 
 // 更新用户（已完成）
 export function updateUserById(data) {
-
   return request({
     url: '/api/user/update',
     method: 'post',
@@ -59,4 +58,3 @@ export function batchDeleteUserByIds(data) {
     data
   })
 }
-
