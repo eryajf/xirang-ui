@@ -11,41 +11,23 @@
         <el-form-item>
           <el-button :loading="loading" icon="el-icon-search" type="primary" @click="search">查询</el-button>
         </el-form-item>
-        <!-- <el-form-item>
-          <el-button :loading="loading" icon="el-icon-plus" type="warning" @click="resetData">重置</el-button>
-        </el-form-item> -->
         <el-form-item>
           <el-button :loading="loading" icon="el-icon-plus" type="warning" @click="create">新增</el-button>
         </el-form-item>
         <el-form-item>
           <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">批量删除</el-button>
         </el-form-item>
-        <br>
-        <el-form-item>
-          <el-button :loading="loading" icon="el-icon-share" type="danger" @click="syncOpenLdapDepts">同步原ldap部门</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button :loading="loading" icon="el-icon-share" type="danger" @click="syncDingTalkDepts">同步钉钉部门</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button :loading="loading" icon="el-icon-share" type="danger" @click="syncFeiShuDepts">同步飞书部门</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button :loading="loading" icon="el-icon-share" type="danger" @click="syncWeComDepts">同步企业微信部门</el-button>
-        </el-form-item>
       </el-form>
 
       <el-table v-loading="loading" :default-expand-all="true" :tree-props="{children: 'children', hasChildren: 'hasChildren'}" row-key="ID" :data="infoTableData" border stripe style="width: 100%" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
         <el-table-column show-overflow-tooltip sortable prop="groupName" label="名称" />
-        <el-table-column show-overflow-tooltip sortable prop="groupType" label="类型" />
-        <el-table-column show-overflow-tooltip sortable prop="groupDn" label="DN" />
         <el-table-column show-overflow-tooltip sortable prop="remark" label="描述" />
         <el-table-column show-overflow-tooltip sortable prop="CreatedAt" label="创建时间" />
         <el-table-column show-overflow-tooltip sortable prop="UpdatedAt" label="更新时间" />
         <el-table-column fixed="right" label="操作" align="center" width="220">
           <template #default="scope">
-            <el-tooltip v-if="scope.row.groupType != 'ou'" content="添加" effect="dark" placement="top">
+            <el-tooltip  content="成员" effect="dark" placement="top">
               <el-button size="mini" icon="el-icon-setting" circle type="info" @click="addUp(scope.row)" />
             </el-tooltip>
             <el-tooltip content="编辑" effect="dark" placement="top">
@@ -64,9 +46,6 @@
         <el-form ref="dialogForm" size="small" :model="dialogFormData" :rules="dialogFormRules" label-width="120px">
           <el-form-item label="名称" prop="groupName">
             <el-input v-model.trim="dialogFormData.groupName" placeholder="名称(拼音)" />
-          </el-form-item>
-          <el-form-item label="分组类型" prop="groupType">
-            <el-input v-model.trim="dialogFormData.groupType" placeholder="分组类型：ou或cn(建议仅第一层为ou)" />
           </el-form-item>
           <el-form-item label="上级分组" prop="parentId">
             <treeselect
@@ -108,7 +87,7 @@
 <script>
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { getGroupTree, groupAdd, groupUpdate, groupDel, syncDingTalkDeptsApi, syncWeComDeptsApi, syncFeiShuDeptsApi, syncOpenLdapDeptsApi } from '@/api/personnel/group'
+import { getGroupTree, groupAdd, groupUpdate, groupDel } from '@/api/personnel/group'
 
 export default {
   name: 'Group',
@@ -152,7 +131,6 @@ export default {
       dialogFormData: {
         groupName: '',
         parentId: 0,
-        groupType: undefined,
         remark: ''
       },
       dialogFormRules: {
@@ -160,10 +138,6 @@ export default {
         groupName: [
           { required: true, message: '请输入所属类别', trigger: 'blur' },
           { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
-        ],
-        groupType: [
-          { required: true, message: '请输入分组类型', trigger: 'blur' },
-          { min: 1, max: 50, message: 'ou、cn或者其他', trigger: 'blur' }
         ],
         parentId: [
           { required: true, message: '请选择父级', trigger: 'blur' },
@@ -405,58 +379,6 @@ export default {
     },
     treeselectInput(value) {
       this.treeselectValue = value
-    },
-    syncDingTalkDepts() {
-      this.loading = true
-      syncDingTalkDeptsApi().then(res => {
-        this.loading = false
-        this.getTableData()
-        this.$message({
-          showClose: true,
-          message: res.message,
-          type: 'success'
-        })
-      })
-      this.loading = false
-    },
-    syncWeComDepts() {
-      this.loading = true
-      syncWeComDeptsApi().then(res => {
-        this.loading = false
-        this.getTableData()
-        this.$message({
-          showClose: true,
-          message: res.message,
-          type: 'success'
-        })
-      })
-      this.loading = false
-    },
-    syncFeiShuDepts() {
-      this.loading = true
-      syncFeiShuDeptsApi().then(res => {
-        this.loading = false
-        this.getTableData()
-        this.$message({
-          showClose: true,
-          message: res.message,
-          type: 'success'
-        })
-      })
-      this.loading = false
-    },
-    syncOpenLdapDepts() {
-      this.loading = true
-      syncOpenLdapDeptsApi().then(res => {
-        this.loading = false
-        this.getTableData()
-        this.$message({
-          showClose: true,
-          message: res.message,
-          type: 'success'
-        })
-      })
-      this.loading = false
     },
   }
 }

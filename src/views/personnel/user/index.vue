@@ -26,19 +26,6 @@
         <el-form-item>
           <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">批量删除</el-button>
         </el-form-item>
-        <br>
-        <el-form-item>
-          <el-button :loading="loading" icon="el-icon-share" type="danger" @click="syncOpenLdapUsers">同步原ldap用户信息</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button :loading="loading" icon="el-icon-share" type="danger" @click="syncDingTalkUsers">同步钉钉用户信息</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button :loading="loading" icon="el-icon-share" type="danger" @click="syncFeiShuUsers">同步飞书用户信息</el-button>
-        </el-form-item>
-        <el-form-item>
-          <el-button :loading="loading" icon="el-icon-share" type="danger" @click="syncWeComUsers">同步企业微信用户信息</el-button>
-        </el-form-item>
       </el-form>
 
       <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%" @selection-change="handleSelectionChange">
@@ -58,7 +45,6 @@
         <el-table-column show-overflow-tooltip sortable prop="position" label="职位" />
         <el-table-column show-overflow-tooltip sortable prop="creator" label="创建人" />
         <el-table-column show-overflow-tooltip sortable prop="introduction" label="说明" />
-        <el-table-column show-overflow-tooltip sortable prop="userDn" label="DN" />
         <el-table-column show-overflow-tooltip sortable prop="CreatedAt" label="创建时间" />
         <el-table-column show-overflow-tooltip sortable prop="UpdatedAt" label="更新时间" />
         <el-table-column fixed="right" label="操作" align="center" width="120">
@@ -195,7 +181,7 @@
 import JSEncrypt from 'jsencrypt'
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import { getUsers, createUser, updateUserById, batchDeleteUserByIds, syncDingTalkUsersApi, syncWeComUsersApi, syncFeiShuUsersApi, syncOpenLdapUsersApi } from '@/api/personnel/user'
+import { getUsers, createUser, updateUserById, batchDeleteUserByIds } from '@/api/personnel/user'
 import { getRoles } from '@/api/system/role'
 import { getGroupTree } from '@/api/personnel/group'
 
@@ -205,7 +191,7 @@ export default {
     Treeselect
   },
   props: {
-    disabled: { // username 默认不可编辑，若需要至为可编辑，请（在新增和编辑处）去掉这个值的控制，且配合后端的ldap-user-name-modify配置使用
+    disabled: { // username 默认不可编辑
       type: Boolean,
       default: false
     }
@@ -653,58 +639,6 @@ wLXapv+ZfsjG7NgdawIDAQAB
     treeselectInput(value) {
       this.treeselectValue = value
     },
-    syncDingTalkUsers(obj) {
-      this.loading = true
-      syncDingTalkUsersApi().then(res => {
-        this.loading = false
-        this.$message({
-          showClose: true,
-          message: res.message,
-          type: 'success'
-        })
-      })
-      this.getTableData()
-      this.loading = false
-    },
-    syncWeComUsers(obj) {
-      this.loading = true
-      syncWeComUsersApi().then(res => {
-        this.loading = false
-        this.$message({
-          showClose: true,
-          message: res.message,
-          type: 'success'
-        })
-      })
-      this.getTableData()
-      this.loading = false
-    },
-    syncFeiShuUsers(obj) {
-      this.loading = true
-      syncFeiShuUsersApi().then(res => {
-        this.loading = false
-        this.$message({
-          showClose: true,
-          message: res.message,
-          type: 'success'
-        })
-      })
-      this.getTableData()
-      this.loading = false
-    },
-    syncOpenLdapUsers(obj) {
-      this.loading = true
-      syncOpenLdapUsersApi().then(res => {
-        this.loading = false
-        this.$message({
-          showClose: true,
-          message: res.message,
-          type: 'success'
-        })
-      })
-      this.getTableData()
-      this.loading = false
-    }
   }
 }
 </script>

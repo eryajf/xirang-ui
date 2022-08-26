@@ -51,38 +51,3 @@ export function batchDeleteUserByIds(data) {
     data
   })
 }
-// 同步钉钉用户信息
-export function syncDingTalkUsersApi(data) {
-  return request({
-    url: '/api/user/syncDingTalkUsers',
-    method: 'post',
-    data
-  })
-}
-
-// 同步企业微信用户信息
-export function syncWeComUsersApi(data) {
-  return request({
-    url: '/api/user/syncWeComUsers',
-    method: 'post',
-    data
-  })
-}
-
-// 同步飞书用户信息
-export function syncFeiShuUsersApi(data) {
-  return request({
-    url: '/api/user/syncFeiShuUsers',
-    method: 'post',
-    data
-  })
-}
-
-// 同步openldap用户信息
-export function syncOpenLdapUsersApi(data) {
-  return request({
-    url: '/api/user/syncOpenLdapUsers',
-    method: 'post',
-    data
-  })
-}

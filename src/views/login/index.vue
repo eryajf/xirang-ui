@@ -45,7 +45,7 @@
         </el-form-item>
       </el-tooltip>
       <div class="footer-btn">
-        <div class="btn-pass" @click="changePass">忘记密码</div>
+        <!-- <div class="btn-pass" @click="changePass">忘记密码</div> -->
         <!-- <router-link :to="{path:'/changePass'}" class='btn-pass'>忘记密码</router-link> -->
         <!-- <el-button :loading="loading" type="primary" class="login-btn" @click.native.prevent="delLogin">忘记密码</el-button> -->
         <el-button :loading="loading" type="primary" class="login-btn" @click.native.prevent="handleLogin">登录</el-button>
@@ -155,11 +155,6 @@ wLXapv+ZfsjG7NgdawIDAQAB
           return false
         }
       })
-    },
-    changePass() {
-      // console.log(75545)
-      // window.location.href='/changePass'
-      this.$router.push({ path: '/changePass' })
     },
     getOtherQuery(query) {
       return Object.keys(query).reduce((acc, cur) => {

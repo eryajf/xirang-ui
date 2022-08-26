@@ -72,38 +72,3 @@ export function delGroup(data) {
     data
   })
 }
-// 同步钉钉部门信息
-export function syncDingTalkDeptsApi(data) {
-  return request({
-    url: '/api/group/syncDingTalkDepts',
-    method: 'post',
-    data
-  })
-}
-
-// 同步企业微信部门信息
-export function syncWeComDeptsApi(data) {
-  return request({
-    url: '/api/group/syncWeComDepts',
-    method: 'post',
-    data
-  })
-}
-
-// 同步飞书部门信息
-export function syncFeiShuDeptsApi(data) {
-  return request({
-    url: '/api/group/syncFeiShuDepts',
-    method: 'post',
-    data
-  })
-}
-
-// 同步openldap部门信息
-export function syncOpenLdapDeptsApi(data) {
-  return request({
-    url: '/api/group/syncOpenLdapDepts',
-    method: 'post',
-    data
-  })
-}
