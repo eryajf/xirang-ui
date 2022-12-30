@@ -36,7 +36,7 @@
         <!-- 使用按钮方式展示，以后改成布尔参数比较合适 -->
         <el-table-column label="状态" align="center">
           <template slot-scope="scope">
-            <el-switch v-model="scope.row.status" :active-value='1' :inactive-value='2' @change="userStateChanged(scope.row)"></el-switch>
+            <el-switch v-model="scope.row.status" :active-value="1" :inactive-value="2" @change="userStateChanged(scope.row)" />
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip sortable prop="mail" label="邮箱" />
@@ -234,12 +234,7 @@ export default {
 
       passwordType: 'password',
 
-      publicKey: `-----BEGIN PUBLIC KEY-----
-MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDbOYcY8HbDaNM9ooYXoc9s+R5o
-R05ZL1BsVKadQBgOVH/kj7PQuD+ABEFVgB6rJNi287fRuZeZR+MCoG72H+AYsAhR
-sEaB5SuI7gDEstXuTyjhx5bz0wUujbDK4VMgRfPO6MQo+A0c95OadDEvEQDG3KBQ
-wLXapv+ZfsjG7NgdawIDAQAB
------END PUBLIC KEY-----`,
+      publicKey: process.env.VUE_APP_PUBLIC_KEY,
 
       // dialog对话框
       submitLoading: false,
@@ -313,8 +308,8 @@ wLXapv+ZfsjG7NgdawIDAQAB
       multipleSelection: [],
       changeUserStatusFormData: {
         id: '',
-        status: '',
-      },
+        status: ''
+      }
     }
   },
   created() {
@@ -592,7 +587,7 @@ wLXapv+ZfsjG7NgdawIDAQAB
     },
 
     // 监听 switch 开关 状态改变
-   async userStateChanged(userInfo) {
+    async userStateChanged(userInfo) {
       this.changeUserStatusFormData.id = userInfo.ID
       this.changeUserStatusFormData.status = userInfo.status
 
@@ -657,7 +652,7 @@ wLXapv+ZfsjG7NgdawIDAQAB
     },
     treeselectInput(value) {
       this.treeselectValue = value
-    },
+    }
   }
 }
 </script>
