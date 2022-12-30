@@ -42,7 +42,7 @@
             <el-tag size="small" :type="scope.row.timeCost | timeCostTagFilter" disable-transitions>{{ scope.row.timeCost }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column show-overflow-tooltip sortable prop="desc" label="说明" />
+        <el-table-column show-overflow-tooltip sortable prop="remark" label="说明" />
         <el-table-column fixed="right" label="操作" align="center" width="80">
           <template slot-scope="scope">
             <el-tooltip content="删除" effect="dark" placement="top">
@@ -141,7 +141,7 @@ export default {
       this.loading = true
       try {
         const { data } = await getOperationLogs(this.params)
-  
+
         this.tableData = data.logs
         this.total = data.total
       } finally {
@@ -194,7 +194,7 @@ export default {
       this.loading = true
       let message = ''
       try {
-        const {  msg} = await batchDeleteOperationLogByIds({ operationLogIds: [Id] })
+        const { msg } = await batchDeleteOperationLogByIds({ operationLogIds: [Id] })
         message = msg
       } finally {
         this.loading = false
