@@ -24,7 +24,7 @@ export default {
   },
   data() {
     return {
-      title: 'Go Web Mini',
+      title: 'XiRang',
       logo: require('@/assets/sidebar-logo/webmini.png')
     }
   }

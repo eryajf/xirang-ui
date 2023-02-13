@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Go Web Mini',
+  title: 'XiRang',
 
   /**
    * @type {boolean} true | false
