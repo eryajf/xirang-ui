@@ -88,6 +88,7 @@
 import Treeselect from '@riophae/vue-treeselect'
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import { getGroupTree, groupAdd, groupUpdate, groupDel } from '@/api/personnel/group'
+import { Message } from 'element-ui'
 
 export default {
   name: 'Group',
@@ -129,6 +130,7 @@ export default {
       dialogType: '',
       dialogFormVisible: false,
       dialogFormData: {
+        ID: '',
         groupName: '',
         parentId: 0,
         remark: ''
@@ -248,34 +250,39 @@ export default {
       this.transParams.nickname = row.remark
       this.$router.push({ path: '/userList', query: row })
     },
+    // 判断结果
+    judgeResult(res){
+      if (res.code==0){
+          Message({
+            showClose: true,
+            message: "操作成功",
+            type: 'success'
+          })
+        }
+    },
 
     // 提交表单
     submitForm() {
       this.$refs['dialogForm'].validate(async valid => {
         if (valid) {
-          let message = ''
           this.submitLoading = true
           try {
             if (this.dialogType === 'create') {
-              const { msg } = await groupAdd(this.dialogFormData)
-              message = msg
+              await groupAdd(this.dialogFormData).then(res =>{
+                this.judgeResult(res)
+              })
             } else {
-              const { msg } = await groupUpdate(this.dialogFormData)
-              message = msg
+              await groupUpdate(this.dialogFormData).then(res =>{
+                this.judgeResult(res)
+              })
             }
           } finally {
             this.submitLoading = false
           }
-
           this.resetForm()
           this.getTableData()
-          this.$message({
-            showClose: true,
-            message: message,
-            type: 'success'
-          })
         } else {
-          this.$message({
+          Message({
             showClose: true,
             message: '表单校验失败',
             type: 'error'
@@ -313,22 +320,16 @@ export default {
         this.multipleSelection.forEach(x => {
           groupIds.push(x.ID)
         })
-        let message = ''
         try {
-          const { msg } = await groupDel({ groupIds: groupIds })
-          message = msg
+          await groupDel({ groupIds: groupIds }).then(res =>{
+            this.judgeResult(res)
+          })
         } finally {
           this.loading = false
         }
-
         this.getTableData()
-        this.$message({
-          showClose: true,
-          message: message,
-          type: 'success'
-        })
       }).catch(() => {
-        this.$message({
+        Message({
           showClose: true,
           type: 'info',
           message: '已取消删除'
@@ -344,20 +345,15 @@ export default {
     // 单个删除
     async singleDelete(Id) {
       this.loading = true
-      let message = ''
       try {
-        const { msg } = await groupDel({ groupIds: [Id] })
-        message = msg
+        await groupDel({ groupIds: [Id] }).then(res =>{
+          this.judgeResult(res)
+        })
       } finally {
         this.loading = false
       }
 
       this.getTableData()
-      this.$message({
-        showClose: true,
-        message: message,
-        type: 'success'
-      })
     },
 
     // 分页

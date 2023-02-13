@@ -7,7 +7,7 @@ import router from '@/router'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.NODE_ENV === 'production' ? process.env.VUE_APP_BASE_API : '/', // api 的 base_url
+  baseURL: process.env.NODE_ENV === 'production' ? process.env.VUE_APP_BASE_API : '/' // api 的 base_url
   // withCredentials: true, // send cookies when cross-domain requests
   // timeout: 5000 // request timeout
 })
@@ -46,13 +46,21 @@ service.interceptors.response.use(
    */
   response => {
     const res = response.data
-    return res
+    if (res.code === 0 || res.code === 200) {
+      return res
+    } else {
+      Message({
+        message: res.msg,
+        type: 'error'
+      })
+      return false
+    }
   },
   error => {
     if (error.response.status === 401) {
       if (error.response.data.message.indexOf('JWT认证失败') !== -1) {
         MessageBox.confirm(
-          '登录超时, 重新登录或继续停留在当前页？',
+          '登录失败,用户名或密码错误,重新登录或继续停留在当前页？',
           '登录状态已失效',
           {
             confirmButtonText: '重新登录',
@@ -79,7 +87,6 @@ service.interceptors.response.use(
     } else if (error.response.status === 403) {
       router.push({ path: '/401' })
     } else {
-
       Message({
         showClose: true,
         message: error.response.data.message || error.message,
