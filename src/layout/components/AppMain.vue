@@ -5,6 +5,21 @@
         <router-view :key="key" />
       </keep-alive>
     </transition>
+    <el-footer  class="footer-copyright">
+      <div>
+        <span>Since 2022 </span>
+        <el-divider direction="vertical" />
+        <span>Powered by </span>
+          <span>
+            <a href="https://github.com/eryajf/xirang" target="_blank">XiRang</a>
+          </span>
+        <el-divider direction="vertical" />
+        <span>Copyright </span>
+          <span>
+            <a href="https://github.com/eryajf" target="_blank">Eryajf</a>
+          </span>
+      </div>
+    </el-footer>
   </section>
 </template>
 
@@ -16,7 +31,7 @@ export default {
       return this.$store.state.tagsView.cachedViews
     },
     key() {
-     
+
       return this.$route.path
     }
   }
@@ -34,6 +49,16 @@ export default {
 
 .fixed-header+.app-main {
   padding-top: 50px;
+}
+
+.footer-copyright {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  line-height: 45px;
+  text-align: center;
+  border-top: 1px dashed #dcdfe6;
 }
 
 .hasTagsView {
