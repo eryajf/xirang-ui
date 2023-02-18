@@ -653,6 +653,7 @@ export default {
 <style scoped>
   .container-card{
     margin: 10px;
+    margin-bottom: 100px;
   }
 
   .delete-popover{
