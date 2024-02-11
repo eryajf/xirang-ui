@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 获取接口列表（已完成）
 export function getApis(params) {
   return request({
-    url: '/api/api/list',
+    url: '/api/system/api/list',
     method: 'get',
     params
   })
@@ -12,7 +12,7 @@ export function getApis(params) {
 // 获取接口树(按接口Category字段分类)（已完成）
 export function getApiTree(params) {
   return request({
-    url: '/api/api/tree',
+    url: '/api/system/api/tree',
     method: 'get',
     params
   })
@@ -21,7 +21,7 @@ export function getApiTree(params) {
 // 创建接口（已完成）
 export function createApi(data) {
   return request({
-    url: '/api/api/add',
+    url: '/api/system/api/add',
     method: 'post',
     data
   })
@@ -30,7 +30,7 @@ export function createApi(data) {
 // 更新接口（已完成）
 export function updateApiById(data) {
   return request({
-    url: '/api/api/update',
+    url: '/api/system/api/update',
     method: 'post',
     data
   })
@@ -39,7 +39,7 @@ export function updateApiById(data) {
 // 批量删除接口（已完成）
 export function batchDeleteApiByIds(data) {
   return request({
-    url: '/api/api/delete',
+    url: '/api/system/api/delete',
     method: 'post',
     data
   })
